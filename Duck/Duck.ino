@@ -19,11 +19,11 @@
 //#define DL
 //const char *AP = " 🆘 DUCK EMERGENCY PORTAL";
 
-#define MD
-const char *AP = " 🆘 MAMA EMERGENCY PORTAL";
+//#define MD
+//const char *AP = " 🆘 MAMA EMERGENCY PORTAL";
 
-//#define PD
-//const char *AP = " 🆘 PAPA EMERGENCY PORTAL";
+#define PD
+const char *AP = " 🆘 PAPA EMERGENCY PORTAL";
 
 #define THIRTYMIN (1000UL * 60 * 30);
 unsigned long rolltime = millis() + THIRTYMIN;

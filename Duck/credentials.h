@@ -3,8 +3,8 @@
 #ifndef __CREDENTIALS_H__
 #define __CREDENTIALS_H__
 
-#define SSID        "Evans_Guest" // Type your SSID
-#define PASSWORD    "ThisIsMyGuestNetwork!" // Type your Password
+#define SSID        "nick_owl" // Type your SSID
+#define PASSWORD    "helloDuck11" // Type your Password
 
 //#define MQTT_MAX_PACKET_SIZE 1000;
 
@@ -14,7 +14,7 @@
 #define TOKEN       "DI2pFVAkmo&?D36h9z"      // your device token or not used for "quickstart"#define SSID        "nick_owl" // Type your SSID
 
 char server[]           = ORG ".messaging.internetofthings.ibmcloud.com";
-char topic[]            = "iot-2/evt/status/fmt/json";
+char topic[]            = "iot-2/evt/sensorup/fmt/json";
 char authMethod[]       = "use-token-auth";
 char token[]            = TOKEN;
 char clientId[]         = "d:" ORG ":" DEVICE_TYPE ":" DEVICE_ID;

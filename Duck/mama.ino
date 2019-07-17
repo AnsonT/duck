@@ -1,5 +1,10 @@
 #ifdef MD
 
+int smokeA0 = 39;
+// Your threshold value
+int sensorThres = 800;
+int count = 5;
+
 void setup()
 {
   Serial.begin(115200);
@@ -14,10 +19,14 @@ void setup()
 
   Serial.println("Mama Online");
   u8x8.drawString(0, 1, "Mama Online");
+
+  //Setup Gas
+  pinMode(smokeA0, INPUT);
 }
 
 void loop()
 {
+  int analogSensor = analogRead(smokeA0);
   // ⚠️ Parses Civilian Requests into Data Structure
   readData();
   if (offline.fromCiv == 1 && offline.phone != NULL && offline.phone != "")
@@ -42,6 +51,33 @@ void loop()
 
   // Sends Duck Stat every 30 minutes
   sendDuckStat(offline);
+  Serial.print("Pin A0: ");
+  Serial.println(analogSensor);
+  // Checks if it has reached the threshold value
+  if (analogSensor > sensorThres)
+  {
+    offline.fname = analogSensor;
+    offline.messageId = "Sensor";
+    offline.fromCiv = 1;
+    offline.phone = analogSensor;
+    sendPayload(offline);
+  }
+  else
+  {
+
+  }
+  
+  if(count >= 5) {
+    offline.fname = analogSensor;
+    offline.messageId = "Sensor";
+    offline.fromCiv = 1;
+    offline.phone = analogSensor;
+    sendPayload(offline);
+    count = 0;
+  } else {
+    count++;
+  }
+  
 }
 
 #endif
