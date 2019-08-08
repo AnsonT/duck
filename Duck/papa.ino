@@ -10,6 +10,7 @@ PubSubClient client(server, 8883, wifiClient);
 void setup()
 {
   Serial.begin(115200);
+  aes_init();
 
   iAm = "papa-duck";
   setupDuck();
@@ -130,7 +131,7 @@ void jsonify(Data offline)
   civilian_need["first-aid"]  = offline.firstaid;
   civilian_need["water"]      = offline.water;
   civilian_need["food"]       = offline.food;
-  civilian["message"]         = offline.msg;
+  civilian["message"]         = decrypt(offline.msg, aes_iv);
 
   root["path"]                = offline.path;
 

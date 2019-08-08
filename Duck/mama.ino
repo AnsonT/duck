@@ -3,6 +3,7 @@
 void setup()
 {
   Serial.begin(115200);
+  aes_init();
 
   iAm = "mama-duck";
   empty.whoAmI = "mama-duck";
