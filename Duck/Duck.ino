@@ -319,9 +319,14 @@ void readData()
     offline.firstaid   = webServer.arg(7);
     offline.water      = webServer.arg(8);
     offline.food       = webServer.arg(9);
-    offline.msg        = encrypt(webServer.arg(10), aes_iv);
+    
     offline.path       = empty.duckID;
 
+    int msgLen = webServer.arg(10).length();
+    char copy[msgLen];
+    webServer.arg(10).toCharArray(copy,msgLen);
+    offline.msg        = encrypt(copy, aes_iv);
+    
     u8x8.setCursor(0, 16);
     u8x8.print("Name: " + offline.fname);
 
