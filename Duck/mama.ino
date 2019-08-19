@@ -60,6 +60,8 @@ void loop()
     offline.messageId = "Sensor";
     offline.fromCiv = 1;
     offline.phone = analogSensor;
+    offline.path = offline.duckID + ",";
+    offline = empty;
     sendPayload(offline);
   }
   else
