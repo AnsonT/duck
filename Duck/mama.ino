@@ -50,7 +50,7 @@ void loop()
   }
 
   // Sends Duck Stat every 30 minutes
-  sendDuckStat(offline);
+  //sendDuckStat(offline);
   Serial.print("Pin A0: ");
   Serial.println(analogSensor);
   // Checks if it has reached the threshold value
@@ -72,7 +72,9 @@ void loop()
     offline.messageId = "Sensor";
     offline.fromCiv = 1;
     offline.phone = analogSensor;
+    offline.path = offline.duckID + ",";
     sendPayload(offline);
+    offline = empty;
     count = 0;
   } else {
     count++;
