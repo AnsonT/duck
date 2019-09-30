@@ -3,6 +3,7 @@
 #include <LoRa.h>
 #include <WiFi.h>
 #include <U8x8lib.h>
+#include "timer.h"
 
 // Ducklink
 #include <DNSServer.h>
@@ -11,16 +12,18 @@
 #include "index.h"
 #include "credentials.h"
 
+auto timer = timer_create_default(); // create a timer with default settings
+
 /***************************************************
 un/comment lines to compile Ducklink/Mama/Papa
 ***************************************************/
 
 // Recommendation First compile Mama board, then reverse and compile Papa board
-#define DL
-const char *AP = " 🆘 DUCK EMERGENCY PORTAL";
+#//define DL
+//const char *AP = " 🆘 DUCK EMERGENCY PORTAL";
 
-// #define MD
-// const char *AP = " 🆘 MAMA EMERGENCY PORTAL";
+#define MD
+const char *AP = " 🆘 MAMA EMERGENCY PORTAL";
 
 // #define PD
 // const char *AP = " 🆘 PAPA EMERGENCY PORTAL";
@@ -323,7 +326,7 @@ void readData()
     id = webId;
 
     Serial.println("After_____ID: " + id + " Webserver: " + webServer.arg(0));
-    showReceivedData();
+    //showReceivedData();
 
   }
   //  return offlineA;
