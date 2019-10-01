@@ -348,12 +348,19 @@ Shows Sent Data
 
 void sendQuacks(String deviceID, String messageID, String payload)
 {
-  LoRa.beginPacket();
-  couple(user_ID, deviceID);
-  couple(message_ID, messageID);
-  couple(quacket_B, payload);
-  couple(path_B, deviceID);
-  LoRa.endPacket();
+  if(payload.length() > 140)
+  {
+    Serial.println("The length of the payload is too long.");
+  }
+  else
+  {
+    Serial.println("Sending Payload");
+    LoRa.beginPacket();
+    couple(quacket_B, deviceID);
+    couple(quacket_B, messageID);
+    couple(quacket_B, payload);
+    LoRa.endPacket();
+  }
 }
 
 void sendPayload(Data offline)
