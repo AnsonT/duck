@@ -15,21 +15,22 @@
 un/comment lines to compile Ducklink/Mama/Papa
 ***************************************************/
 
-bool QuackPack = false; //DONT TOUCH
-
-//Define if there is a quackPack for this device
-//#define QUACKPACK
-//#define MAMAQUACK //Only define if MD is defined
-
 // Recommendation First compile Mama board, then reverse and compile Papa board
-//#define DL
-//const char *AP = " 🆘 DUCK EMERGENCY PORTAL";
+#define DL
+const char *AP = " 🆘 DUCK EMERGENCY PORTAL";
 
-#define MD
-const char *AP = " 🆘 MAMA EMERGENCY PORTAL";
+// #define MD
+// const char *AP = " 🆘 MAMA EMERGENCY PORTAL";
 
 //#define PD
 //const char *AP = " 🆘 PAPA EMERGENCY PORTAL";
+
+bool QuackPack = false; //DONT TOUCH
+
+//Define if there is a quackPack for this device
+#define QUACKPACKSIM // Define to simulate sensor data at 10 second intervals
+// #define QUACKPACK
+// #define MAMAQUACK //Only define if MD is defined and has quackPack
 
 #define THIRTYMIN (1000UL * 60 * 30);
 unsigned long rolltime = millis() + THIRTYMIN;
@@ -55,8 +56,8 @@ Local DNS (duck.local)
 const char *DNS  = "duck";
 
 String portal = MAIN_page;
-String id = "";
-String iAm = "Civ";
+String id     = "";
+String iAm    = "Civ";
 String runTime;
 
 /**
@@ -135,7 +136,7 @@ byte user_ID      = 0xF5;
 byte message_ID   = 0xF6;
 byte quacket_B    = 0xF7;
 
-byte iamhere       = 0xF8;
+byte iamhere      = 0xF8;
 
 // the OLED used
 U8X8_SSD1306_128X64_NONAME_SW_I2C u8x8(/* clock=*/ 15, /* data=*/ 4, /* reset=*/ 16);
@@ -367,20 +368,11 @@ void sendPayload(Data offline)
 {
   LoRa.beginPacket();
 
-//  if(QuackPack  == true)
-//  {
-//    QuackPayload();
-//    
-//  }
-//  else
-//  {
     couple(msgId_B, offline.messageId);
     couple(whoAmI_B, offline.whoAmI);
     couple(duckID_B, offline.duckID);
     couple(whereAmI_B, offline.whereAmI);
     couple(runTime_B, offline.runTime);
-
-    //couple(fromCiv_B, 0);
 
     couple(fname_B, offline.fname);
     couple(street_B, offline.street);
@@ -397,7 +389,7 @@ void sendPayload(Data offline)
     couple(msg_B, offline.msg);
 
     couple(path_B, offline.path);
-//  }
+
   LoRa.endPacket();
 }
 
