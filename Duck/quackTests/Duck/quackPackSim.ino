@@ -14,7 +14,7 @@ void setupQuack()
 {
   QuackPack = true;
 
-  payload.deviceID  = "20seven";
+  payload.deviceID  = "20nine";
   payload.sensorVal = 0;
 
   Serial.print("setupQuack()");
@@ -34,7 +34,7 @@ void loopQuack()
 
   Serial.println("\n==============\n");
 
-  String quacket = payload.sensorVal + ",";
+  String quacket = payload.sensorVal + ", Test";
 
   // Use SendQuacks to send your data through the Duck network
   sendQuacks(payload.deviceID, String(random(999)), quacket); //Send data

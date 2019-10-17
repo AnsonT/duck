@@ -12,12 +12,6 @@ void setup()
   setupLoRa();
   setupPortal();
 
-  // if(QuackPack == true)
-  // {
-  //   Serial.println("MamaQuack - Setup");
-  //   setupQuack();
-  // }
-
   #ifdef QUACKPACK
   setupQuack();
   QuackPack = true;
@@ -25,12 +19,11 @@ void setup()
   offline.whoAmI = "quackpack";
   empty.whoAmI = "quackpack";
 
-  Serial.println("MamaQuack - Setup");
+  Serial.println("quackPack - Setup");
   #endif
 
-
-   Serial.println("Duck Online");
-   u8x8.drawString(0, 1, "Duck Online");
+  Serial.println("Duck Online");
+  u8x8.drawString(0, 1, "Duck Online");
 }
 
 void loop()

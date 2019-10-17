@@ -1,12 +1,14 @@
 // If Quack is Defined in SetUp QuackPack will be Compiled with rest of MamaQuack
 #ifdef MAMAQUACK
-#include <SFE_BMP180.h>
+#include <Adafruit_BMP085_U.h>
+//#include <Adafruit_BMP280.h>
 #include "timer.h"
 
-// // Simple Boilerplate for 3rd Party Devs (QuackHackers)
+// Mama Sensor code
 
-SFE_BMP180 pressure;
-auto timer = timer_create_default(); // create a timer with default settings
+Adafruit_BMP085_Unified bmp = Adafruit_BMP085_Unified(10085);
+//Adafruit_BMP280 bmp;
+auto timer2 = timer_create_default(); // create a timer with default settings
 
 typedef struct
 {
@@ -17,25 +19,27 @@ Quack payload;
 
 void setupQuack()
 {
-  QuackPack = true;
-
   payload.deviceID  = empty.duckID; //Should send as a char
   payload.sensorVal = "";
 
-  if (pressure.begin())
-    Serial.println("BMP180 init success");
-  else
+  if(!bmp.begin())
   {
-      // Oops, something went wrong, this is usually a connection problem,
-      // see the comments at the top of this sketch for the proper connections.
-
-    Serial.println("BMP180 init fail\n\n");
-    while(1); // Pause forever.
+    /* There was a problem detecting the BMP085 ... check your connections */
+    Serial.print("Ooops, no BMP085 detected ... Check your wiring or I2C ADDR!");
+    QuackPack = false;
+    sendQuacks(payload.deviceID, uuidCreator(), "Sensor failed to start"); //Send data
+    delay(1000);
+    sendQuacks(payload.deviceID, uuidCreator(), "Sensor failed to start"); //Send data
+  } else {
+    QuackPack = true;
+    Serial.println("BMP on");
   }
 
-
-  timer.every(5000, getSensorData);
-
+  if(QuackPack == true) {
+    Serial.println("Start timer");
+    timer2.every(300000, getSensorData);
+  }
+  
   Serial.begin(115200);
   Serial.print("setupMamaQuack()");
 
@@ -44,53 +48,23 @@ void setupQuack()
 
 void loopQuack()
 {
-  timer.tick();
+  timer2.tick();
 }
 
 bool getSensorData(void *){
-  char status;
-  double T,P;
+  float T,P;
   
-  status = pressure.startTemperature();
-  if (status != 0)
-  {
-    // Wait for the measurement to complete:
-    delay(status);
-
-    status = pressure.getTemperature(T);
-    if (status != 0)
-    {
-      // Print out the measurement:
-      Serial.print("Temp: ");
-      Serial.print(T);
-      Serial.print("C");
-      
-    status = pressure.startPressure(3);
-      if (status != 0)
-      {
-        // Wait for the measurement to complete:
-        delay(status);
-
-        status = pressure.getPressure(P,T);
-        if (status != 0)
-        {
-          // Print out the measurement:
-          Serial.print("absolute pressure: ");
-          Serial.print(P,2);
-          Serial.print(" mb");
-        }
-        else Serial.println("error retrieving pressure measurement\n");
-      }
-      else Serial.println("error starting pressure measurement\n");
-    }
-    else Serial.println("error retrieving temperature measurement\n");
-  }
-  else Serial.println("error starting temperature measurement\n");
+  bmp.getTemperature(&T);
+  Serial.println(T);
+  bmp.getPressure(&P);
+  Serial.println(P);
 
   payload.sensorVal = "Temp: " + String(T) + " Pres: " + String(P); //Store Data
-  
-  sendQuacks(payload.deviceID, "message id here", payload.sensorVal); //Send data
 
+  offline.path = "";
+  sendQuacks(payload.deviceID, uuidCreator(), payload.sensorVal); //Send data
+  offline.path = empty.path;
+  
   return true;
 }
 
